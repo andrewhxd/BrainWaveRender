@@ -15,6 +15,14 @@ export interface RegisterData extends LoginCredentials {
   full_name: string;
 }
 
+// Get the base URL for redirects
+const getBaseUrl = () => {
+  if (import.meta.env.PROD) {
+    return import.meta.env.VITE_APP_URL || window.location.origin;
+  }
+  return window.location.origin;
+};
+
 export const authService = {
   // Login with email and password
   async login({ email, password }: LoginCredentials): Promise<AuthResponse> {
@@ -70,11 +78,10 @@ export const authService = {
 
   // Login with Google
   async loginWithGoogle(): Promise<void> {
-    const { origin } = window.location;
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: `${getBaseUrl()}/auth/callback`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
@@ -88,7 +95,7 @@ export const authService = {
     await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${getBaseUrl()}/auth/callback`,
       },
     });
   },
@@ -108,7 +115,7 @@ export const authService = {
   // Reset password
   async resetPassword(email: string): Promise<{ error: AuthError | null }> {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: `${getBaseUrl()}/auth/reset-password`,
     });
     return { error };
   },
