@@ -74,7 +74,7 @@ export const authService = {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${origin}/auth/callback`,
+        redirectTo: `${import.meta.env.VITE_APP_URL}/auth/callback`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
@@ -88,7 +88,7 @@ export const authService = {
     await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${import.meta.env.VITE_APP_URL}/auth/callback`,
       },
     });
   },
@@ -108,7 +108,7 @@ export const authService = {
   // Reset password
   async resetPassword(email: string): Promise<{ error: AuthError | null }> {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/reset-password`,
+      redirectTo: `${import.meta.env.VITE_APP_URL}/auth/reset-password`,
     });
     return { error };
   },
