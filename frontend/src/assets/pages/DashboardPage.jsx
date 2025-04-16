@@ -126,7 +126,7 @@ const DashboardPage = () => {
                   key={group.id} 
                   group={group} 
                   onDelete={handleDeleteGroup}
-                />
+                  />
               ))}
             </div>
           )}

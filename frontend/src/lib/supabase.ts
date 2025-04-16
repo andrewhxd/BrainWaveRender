@@ -8,21 +8,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables');
 }
 
-// Get the base URL for redirects
-const getBaseUrl = () => {
-  if (import.meta.env.PROD) {
-    return import.meta.env.VITE_APP_URL || window.location.origin;
-  }
-  return window.location.origin;
-};
-
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce',
-  },
-});
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
 
 export type { User } from '@supabase/supabase-js';

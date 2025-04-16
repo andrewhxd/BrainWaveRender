@@ -9,10 +9,9 @@ export const StudyGroupCard = ({ group, onDelete }) => {
   const isOwner = user?.id === group.owner_id;
 
   const handleDelete = async (e) => {
-    e.preventDefault(); // Prevent navigation from Link
-    if (!window.confirm('Are you sure you want to delete this study group?')) {
-      return;
-    }
+    e.preventDefault(); // Prevent navigation
+    e.stopPropagation(); // Prevent link click
+    if (!window.confirm('Are you sure you want to delete this study group?')) return;
 
     try {
       const { error } = await supabase
@@ -42,6 +41,7 @@ export const StudyGroupCard = ({ group, onDelete }) => {
             <Unlock className="w-4 h-4 text-gray-500" />
           )}
         </h3>
+
         {isOwner && (
           <button
             onClick={handleDelete}
@@ -52,17 +52,17 @@ export const StudyGroupCard = ({ group, onDelete }) => {
           </button>
         )}
       </div>
-      
+
       {group.subject && (
         <div className="inline-block px-3 py-1 mb-3 text-sm bg-purple-100 text-purple-800 rounded-full">
           {group.subject}
         </div>
       )}
-      
+
       <p className="text-gray-600 mb-4 line-clamp-2">
         {group.description || "No description provided"}
       </p>
-      
+
       <div className="flex items-center text-gray-500 text-sm">
         <Users className="w-4 h-4 mr-1" />
         <span>{group.max_participants} max participants</span>
